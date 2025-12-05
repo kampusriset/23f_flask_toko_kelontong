@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Daftar Barang</h3>
+<table class="table table-bordered">
+  <thead><tr><th>Nama</th><th>Harga (Rp)</th><th>Stok</th><th>Aksi</th></tr></thead>
+  <tbody>
+  {% for item in items %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ '%.2f'|format(item.price) }}</td>
+      <td>{{ item.stock }}</td>
+      <td>
+        <a class="btn btn-sm btn-success" href="{{ url_for('add_to_cart', item_id=item.id) }}">Tambah ke Keranjang</a>
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="4">Belum ada barang. Tambah barang baru.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<div class="float-right">
+  <a class="btn btn-primary" href="{{ url_for('view_cart') }}">Lihat Keranjang</a>
+</div>
+{% endblock %}

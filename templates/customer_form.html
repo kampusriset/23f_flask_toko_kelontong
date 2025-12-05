@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3>{{ action }} Pelanggan</h3>
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Nama</label>
+      <input class="form-control" name="nama" required value="{{ customer.nama if customer is defined else '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Telepon</label>
+      <input class="form-control" name="telepon" value="{{ customer.telepon if customer is defined else '' }}">
+    </div>
+    <button class="btn btn-primary">{{ action }}</button>
+    <a class="btn btn-secondary" href="{{ url_for('customers') }}">Batal</a>
+  </form>
+{% endblock %}

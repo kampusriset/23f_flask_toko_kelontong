@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3>Transaksi #{{ tr.id }}</h3>
+  <p>Pelanggan: {{ tr.customer_name }}</p>
+  <p>Total: Rp {{ '{:,.0f}'.format(tr.total) }}</p>
+  <p>Tanggal: {{ tr.tanggal.strftime('%Y-%m-%d %H:%M') }}</p>
+  <h5>Items</h5>
+  <table class="table">
+    <thead><tr><th>Produk</th><th>Harga</th><th>Qty</th><th>Subtotal</th></tr></thead>
+    <tbody>
+      {% for it in items %}
+      <tr>
+        <td>{{ it.product_name }}</td>
+        <td>Rp {{ '{:,.0f}'.format(it.harga) }}</td>
+        <td>{{ it.qty }}</td>
+        <td>Rp {{ '{:,.0f}'.format(it.subtotal) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

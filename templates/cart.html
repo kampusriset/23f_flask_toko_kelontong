@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Keranjang Belanja</h3>
+{% if items %}
+<table class="table table-bordered">
+  <thead><tr><th>Nama</th><th>Harga</th><th>Qty</th><th>Subtotal</th><th>Aksi</th></tr></thead>
+  <tbody>
+  {% for it in items %}
+    <tr>
+      <td>{{ it.name }}</td>
+      <td>{{ '%.2f'|format(it.price) }}</td>
+      <td>{{ it.qty }}</td>
+      <td>{{ '%.2f'|format(it.subtotal) }}</td>
+      <td><a class="btn btn-sm btn-danger" href="{{ url_for('remove_from_cart', item_id=it.id) }}">Hapus</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<h4>Total: Rp {{ '%.2f'|format(total) }}</h4>
+<a class="btn btn-success" href="/clear_cart">Selesai / Clear</a>
+{% else %}
+  <p>Keranjang kosong.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Daftar Transaksi</h2>
+
+    {% if transactions %}
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama Pelanggan</th>
+                <th>Total</th>
+                <th>Tanggal</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in transactions %}
+            <tr>
+                <td>{{ t.id }}</td>
+                <td>{{ t.customer_name }}</td>
+                <td>Rp {{ "{:,.0f}".format(t.total) }}</td>
+                <td>{{ t.tanggal.strftime("%d-%m-%Y %H:%M") }}</td>
+                <td>
+                    <a href="{{ url_for('transaction_detail', id=t.id) }}" class="btn btn-warning btn-sm">Detail</a>
+
+                    <form action="{{ url_for('delete_transaction', id=t.id) }}" 
+                          method="POST" 
+                          style="display:inline;">
+                        <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('Yakin ingin menghapus transaksi ini?')">
+                            Hapus
+                        </button>
+                    </form>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+    <div class="alert alert-info mt-3">Belum ada transaksi.</div>
+    {% endif %}
+
+</div>
+{% endblock %}

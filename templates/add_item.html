@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Tambah Barang Baru</h3>
+<form method="post">
+  <div class="form-group">
+    <label>Nama Barang</label>
+    <input class="form-control" name="name" required>
+  </div>
+  <div class="form-group">
+    <label>Harga (contoh 15000.50)</label>
+    <input class="form-control" name="price" required>
+  </div>
+  <div class="form-group">
+    <label>Stok</label>
+    <input class="form-control" name="stock" value="0" required>
+  </div>
+  <button class="btn btn-primary">Simpan</button>
+  <a class="btn btn-secondary" href="/">Batal</a>
+</form>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3>Dashboard</h3>
+  <div class="row g-3">
+    <div class="col-md-3">
+      <div class="card p-3 shadow-sm">
+        <h6>Total Barang</h6>
+        <p class="fs-4">{{ total_products }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3 shadow-sm">
+        <h6>Total Pelanggan</h6>
+        <p class="fs-4">{{ total_customers }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3 shadow-sm">
+        <h6>Total Transaksi</h6>
+        <p class="fs-4">{{ total_transactions }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3 shadow-sm">
+        <h6>Omzet Hari Ini</h6>
+        <p class="fs-4">Rp {{ '{:,.0f}'.format(omzet_today or 0) }}</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+
