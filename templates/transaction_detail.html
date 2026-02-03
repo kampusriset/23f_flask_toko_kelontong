@@ -1,0 +1,79 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container mt-4">
+  <a href="{{ url_for('transactions') }}" class="btn btn-secondary mb-3"
+    ><i class="bi bi-arrow-left"></i> Kembali ke Daftar Transaksi</a
+  >
+  <h2 class="mb-4 text-primary">Detail Transaksi</h2>
+
+  <!-- Flash message -->
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div class="alert alert-{{ category }} mt-2">{{ message }}</div>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <div class="row">
+    <!-- Ringkasan Transaksi -->
+    <div class="col-md-12 mb-4">
+      <div
+        class="card card-body shadow"
+        style="
+          background: linear-gradient(135deg, #ffffff, #f8f9fa);
+          border-radius: 15px;
+        "
+      >
+        <h4 class="text-primary mb-3">Ringkasan Transaksi #{{ tr.id }}</h4>
+        <div class="row">
+          <div class="col-md-6">
+            <p class="mb-2">
+              <strong>Pelanggan:</strong> {{ tr.customer_name }}
+            </p>
+            <p class="mb-2">
+              <strong>Total:</strong>
+              <span class="text-success font-weight-bold"
+                >Rp {{ '{:,.0f}'.format(tr.total) }}</span
+              >
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-2">
+              <strong>Tanggal:</strong> {% if tr.tanggal %}{{
+              tr.tanggal.strftime('%Y-%m-%d %H:%M') }}{% else %}N/A{% endif %}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daftar Item -->
+    <div class="col-md-12">
+      <div class="card card-body shadow" style="border-radius: 15px">
+        <h5 class="text-primary mb-3">Daftar Item</h5>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th>Produk</th>
+                <th>Harga</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for it in items %}
+              <tr>
+                <td>{{ it.product_name }}</td>
+                <td>Rp {{ '{:,.0f}'.format(it.harga) }}</td>
+                <td>{{ it.qty }}</td>
+                <td><strong>Rp {{ '{:,.0f}'.format(it.subtotal) }}</strong></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

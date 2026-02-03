@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3>{{ action }} Produk</h3>
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Nama</label>
+      <input class="form-control" name="nama" required value="{{ product.nama if product is defined else '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Harga</label>
+      <input class="form-control" name="harga" required value="{{ product.harga if product is defined else 0 }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Stok</label>
+      <input class="form-control" name="stok" required value="{{ product.stok if product is defined else 0 }}">
+    </div>
+    <button class="btn btn-primary">{{ action }}</button>
+    <a class="btn btn-secondary" href="{{ url_for('products') }}">Batal</a>
+  </form>
+{% endblock %}

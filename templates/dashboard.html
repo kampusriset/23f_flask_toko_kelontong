@@ -1,0 +1,142 @@
+{% extends 'base.html' %} {% block content %}
+<div class="dashboard-header mb-4">
+  <h3 class="text-primary fw-bold mb-3">
+    <i class="bi bi-speedometer2 me-2"></i>Dashboard
+  </h3>
+  <p class="text-muted">Ringkasan Toko Mandiri Jaya</p>
+</div>
+<div class="row g-4">
+  <div class="col-md-3">
+    <div class="card dashboard-card p-4 shadow-sm border-0">
+      <div class="card-body text-center">
+        <div class="icon-wrapper mb-3">
+          <i class="bi bi-box-seam display-4 text-primary"></i>
+        </div>
+        <h6 class="card-title text-muted mb-2">Total Barang</h6>
+        <p class="fs-2 fw-bold text-primary mb-0">{{ total_products }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card dashboard-card p-4 shadow-sm border-0">
+      <div class="card-body text-center">
+        <div class="icon-wrapper mb-3">
+          <i class="bi bi-people display-4 text-success"></i>
+        </div>
+        <h6 class="card-title text-muted mb-2">Total Pelanggan</h6>
+        <p class="fs-2 fw-bold text-success mb-0">{{ total_customers }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card dashboard-card p-4 shadow-sm border-0">
+      <div class="card-body text-center">
+        <div class="icon-wrapper mb-3">
+          <i class="bi bi-receipt display-4 text-info"></i>
+        </div>
+        <h6 class="card-title text-muted mb-2">Total Transaksi</h6>
+        <p class="fs-2 fw-bold text-info mb-0">{{ total_transactions }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card dashboard-card p-4 shadow-sm border-0">
+      <div class="card-body text-center">
+        <div class="icon-wrapper mb-3">
+          <i class="bi bi-cash-coin display-4 text-warning"></i>
+        </div>
+        <h6 class="card-title text-muted mb-2">Omzet Hari Ini</h6>
+        <p class="fs-2 fw-bold text-warning mb-0">
+          Rp {{ '{:,.0f}'.format(omzet_today or 0) }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col-md-12">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="fw-bold mb-4">
+          <i class="bi bi-bar-chart-line me-2"></i>Grafik Pesanan
+        </h5>
+
+        <!-- Filter -->
+        <div class="mb-3">
+          <select id="filterChart" class="form-select w-auto">
+            <option value="daily">Harian</option>
+            <option value="weekly">Mingguan</option>
+            <option value="monthly">Bulanan</option>
+          </select>
+        </div>
+
+        <!-- Chart -->
+        <canvas id="orderChart" height="100"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ctx = document.getElementById("orderChart");
+
+  const chartData = {
+    daily: {
+      labels: {{ daily_labels | safe }},
+      data: {{ daily_data | safe }},
+      min: 0,
+      max: 1000000
+    },
+    weekly: {
+      labels: {{ weekly_labels | safe }},
+      data: {{ weekly_data | safe }},
+      min: 100000,
+      max: 5000000
+    },
+    monthly: {
+      labels: {{ monthly_labels | safe }},
+      data: {{ monthly_data | safe }},
+      min: 1000000,
+      max: null
+    }
+  };
+
+  const orderChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: chartData.daily.labels,
+      datasets: [{
+        label: "Pendapatan (Rp)",
+        data: chartData.daily.data,
+        backgroundColor: "#0d6efd"
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) {
+              return 'Rp ' + value.toLocaleString('id-ID');
+            }
+          }
+        }
+      }
+    }
+  });
+
+  document.getElementById("filterChart").addEventListener("change", function () {
+    const value = this.value;
+
+    orderChart.data.labels = chartData[value].labels;
+    orderChart.data.datasets[0].data = chartData[value].data;
+
+    orderChart.options.scales.y.min = chartData[value].min;
+    orderChart.options.scales.y.max = chartData[value].max;
+
+    orderChart.update();
+  });
+</script>
+
+{% endblock %}
